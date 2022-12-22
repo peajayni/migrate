@@ -19,7 +19,7 @@ type Driver interface {
 	Apply(migration Migration) error
 }
 
-func Migrate(driver Driver, migrationsFS fs.FS, logger slog.Logger) error {
+func Migrate(driver Driver, migrationsFS fs.FS, logger *slog.Logger) error {
 	logger.Info("Starting migration")
 	err := driver.Setup()
 	if err != nil {
@@ -47,7 +47,7 @@ func Migrate(driver Driver, migrationsFS fs.FS, logger slog.Logger) error {
 	return nil
 }
 
-func loadNewMigrations(migrationsFS fs.FS, applied []string, logger slog.Logger) ([]Migration, error) {
+func loadNewMigrations(migrationsFS fs.FS, applied []string, logger *slog.Logger) ([]Migration, error) {
 	appliedSet := make(map[string]struct{})
 	for _, a := range applied {
 		appliedSet[a] = struct{}{}

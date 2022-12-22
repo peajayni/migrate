@@ -8,7 +8,7 @@ import (
 	"golang.org/x/exp/slog"
 )
 
-func NewSqlite3Driver(db *sql.DB, logger slog.Logger) *Sqlite3Driver {
+func NewSqlite3Driver(db *sql.DB, logger *slog.Logger) *Sqlite3Driver {
 	return &Sqlite3Driver{
 		db:     db,
 		logger: logger,
@@ -17,7 +17,7 @@ func NewSqlite3Driver(db *sql.DB, logger slog.Logger) *Sqlite3Driver {
 
 type Sqlite3Driver struct {
 	db     *sql.DB
-	logger slog.Logger
+	logger *slog.Logger
 }
 
 func (d *Sqlite3Driver) Setup() error {
