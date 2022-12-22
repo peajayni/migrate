@@ -1,10 +1,11 @@
 package migrate
 
 import (
-	"fmt"
 	"io/fs"
 	"path/filepath"
 	"sort"
+
+	"golang.org/x/exp/slog"
 )
 
 type Migration struct {
@@ -18,11 +19,7 @@ type Driver interface {
 	Apply(migration Migration) error
 }
 
-type Logger interface {
-	Info(msg string)
-}
-
-func Migrate(driver Driver, migrationsFS fs.FS, logger Logger) error {
+func Migrate(driver Driver, migrationsFS fs.FS, logger slog.Logger) error {
 	logger.Info("Starting migration")
 	err := driver.Setup()
 	if err != nil {
@@ -50,7 +47,7 @@ func Migrate(driver Driver, migrationsFS fs.FS, logger Logger) error {
 	return nil
 }
 
-func loadNewMigrations(migrationsFS fs.FS, applied []string, logger Logger) ([]Migration, error) {
+func loadNewMigrations(migrationsFS fs.FS, applied []string, logger slog.Logger) ([]Migration, error) {
 	appliedSet := make(map[string]struct{})
 	for _, a := range applied {
 		appliedSet[a] = struct{}{}
@@ -63,7 +60,7 @@ func loadNewMigrations(migrationsFS fs.FS, applied []string, logger Logger) ([]M
 
 	sort.Strings(paths)
 
-	logger.Info(fmt.Sprintf("Found %d migrations", len(paths)))
+	logger.Info("Found migrations", slog.Int("n", len(paths)))
 
 	var migrations []Migration
 	for _, path := range paths {
@@ -83,6 +80,6 @@ func loadNewMigrations(migrationsFS fs.FS, applied []string, logger Logger) ([]M
 		migrations = append(migrations, migration)
 	}
 
-	logger.Info(fmt.Sprintf("%d migrations to apply", len(migrations)))
+	logger.Info("Migrations to apply", slog.Int("n", len(migrations)))
 	return migrations, nil
 }

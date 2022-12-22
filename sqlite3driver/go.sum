@@ -4,3 +4,5 @@ github.com/hashicorp/go-multierror v1.1.1 h1:H5DkEtf6CXdFp0N0Em5UCwQpXMWke8IA0+l
 github.com/hashicorp/go-multierror v1.1.1/go.mod h1:iw975J/qwKPdAO1clOe2L8331t/9/fmwbPZ6JB6eMoM=
 github.com/peajayni/migrate v0.0.1 h1:LzBfrVkFwwoYBFukKM6Td8mPrThoN+BFwoLX4/Z8xMw=
 github.com/peajayni/migrate v0.0.1/go.mod h1:Pl9UV2K26BZBRef6Va5XYgF8iul5xDpBnUUThicNtzY=
+golang.org/x/exp v0.0.0-20221217163422-3c43f8badb15 h1:5oN1Pz/eDhCpbMbLstvIPa0b/BEQo6g6nwV3pLjfM6w=
+golang.org/x/exp v0.0.0-20221217163422-3c43f8badb15/go.mod h1:CxIveKay+FTh1D0yPZemJVgC/95VzuuOLq5Qi4xnoYc=

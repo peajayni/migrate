@@ -2,13 +2,13 @@ package sqlite3driver
 
 import (
 	"database/sql"
-	"fmt"
 
 	"github.com/hashicorp/go-multierror"
 	"github.com/peajayni/migrate"
+	"golang.org/x/exp/slog"
 )
 
-func NewSqlite3Driver(db *sql.DB, logger migrate.Logger) *Sqlite3Driver {
+func NewSqlite3Driver(db *sql.DB, logger slog.Logger) *Sqlite3Driver {
 	return &Sqlite3Driver{
 		db:     db,
 		logger: logger,
@@ -17,7 +17,7 @@ func NewSqlite3Driver(db *sql.DB, logger migrate.Logger) *Sqlite3Driver {
 
 type Sqlite3Driver struct {
 	db     *sql.DB
-	logger migrate.Logger
+	logger slog.Logger
 }
 
 func (d *Sqlite3Driver) Setup() error {
@@ -62,13 +62,13 @@ func (d *Sqlite3Driver) Applied() ([]string, error) {
 	if err != nil {
 		return []string{}, err
 	}
-	d.logger.Info(fmt.Sprintf("Got %d applied migrations", len(names)))
+	d.logger.Info("Got applied migrations", slog.Int("n", len(names)))
 
 	return names, nil
 }
 
 func (d *Sqlite3Driver) Apply(migration migrate.Migration) error {
-	d.logger.Info(fmt.Sprintf("Applying migration: %s", migration.Name))
+	d.logger.Info("Applying migration", slog.String("name", migration.Name))
 	tx, txErr := d.db.Begin()
 	if txErr != nil {
 		return txErr
@@ -99,6 +99,6 @@ func (d *Sqlite3Driver) Apply(migration migrate.Migration) error {
 	if commitErr != nil {
 		return commitErr
 	}
-	d.logger.Info(fmt.Sprintf("Applied migration: %s", migration.Name))
+	d.logger.Info("Applied migration", slog.String("name", migration.Name))
 	return nil
 }
