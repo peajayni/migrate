@@ -24,8 +24,8 @@ func (d *Sqlite3Driver) Setup() error {
 	d.logger.Info("Ensuring schema_migration table exists")
 	query := `
 	create table if not exists schema_migration(
-		name string not null primary key,
-		executed_at timestamp not null default current_timestamp
+		name text not null primary key,
+    executed_at timestamp not null default (strftime('%Y-%m-%dT%H:%M:%fZ'))
 	)
 	`
 	_, err := d.db.Exec(query)
